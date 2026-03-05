@@ -1,0 +1,32 @@
+=== Demonstrating the Bug Logic ===
+
+The current script does this:
+
+if [ -e "$INITRD_SRC" ]; then
+    ln -fs "$INITRD_SRC" "$KERNEL_INSTALL_STAGING_AREA"
+else
+    echo "$INITRD_SRC does not exist, not installing an initrd"
+fi
+exit 0  ← BUG: Always returns success
+
+SCENARIO 1: initrd exists (normal case)
+  → Script creates symlink
+  → exit 0 ✓ CORRECT
+
+SCENARIO 2: initrd missing (failure case)
+  → Script prints warning
+  → exit 0 ✗ WRONG - should be exit 1
+  → dpkg thinks installation succeeded
+  → GRUB creates unbootable boot entry
+
+PROOF FROM MY SYSTEM:
+When the bug occurred on Feb 11-13, I had:
+  - /boot/initrd.img symlink pointing to initrd.img-6.17.0-14-generic
+  - But /boot/initrd.img-6.17.0-14-generic file did NOT exist
+  - The script detected this (printed warning)
+  - But exited 0 anyway
+  - GRUB created boot entry
+  - System panic on reboot
+
+Current system state: initrd NOW exists (I manually created it to recover)
+Original failure state: symlink existed, target file missing

@@ -1,0 +1,44 @@
+=== VirtualBox DKMS Compilation Failure ===
+This shows the DKMS exit code 11 that stopped the postinst chain.
+When this fails, initramfs-tools never gets to run.
+
+Setting up linux-tools-6.17.0-14-generic (6.17.0-14.14~24.04.1) ...
+Setting up linux-hwe-6.17-headers-6.17.0-14 (6.17.0-14.14~24.04.1) ...
+Setting up linux-image-generic-hwe-24.04 (6.17.0-14.14~24.04.1) ...
+Setting up linux-headers-6.17.0-14-generic (6.17.0-14.14~24.04.1) ...
+/etc/kernel/header_postinst.d/dkms:
+ * dkms: running auto installation service for kernel 6.17.0-14-generic
+Sign command: /usr/bin/kmodsign
+Signing key: /var/lib/shim-signed/mok/MOK.priv
+Public certificate (MOK): /var/lib/shim-signed/mok/MOK.der
+
+Building module:
+Cleaning build area...
+make -j2 KERNELRELEASE=6.17.0-14-generic -C /lib/modules/6.17.0-14-generic/build M=/var/lib/dkms/virtualbox/7.0.16/build...(bad exit status: 2)
+Error! Bad return status for module build on kernel: 6.17.0-14-generic (x86_64)
+Consult /var/lib/dkms/virtualbox/7.0.16/build/make.log for more information.
+dkms autoinstall on 6.17.0-14-generic/x86_64 failed for virtualbox(10)
+Error! One or more modules failed to install during autoinstall.
+Refer to previous errors for more information.
+ * dkms: autoinstall for kernel 6.17.0-14-generic
+   ...fail!
+run-parts: /etc/kernel/header_postinst.d/dkms exited with return code 11
+dpkg: error processing package linux-headers-6.17.0-14-generic (--configure):
+ installed linux-headers-6.17.0-14-generic package post-installation script subprocess returned error exit status 11
+dpkg: dependency problems prevent configuration of linux-headers-generic-hwe-24.04:
+ linux-headers-generic-hwe-24.04 depends on linux-headers-6.17.0-14-generic; however:
+  Package linux-headers-6.17.0-14-generic is not configured yet.
+
+dpkg: error processing package linux-headers-generic-hwe-24.04 (--configure):
+ dependency problems - leaving unconfigured
+dpkg: dependency problems prevent configuration of linux-generic-hwe-24.04:
+ linux-generic-hwe-24.04 depends on linux-headers-generic-hwe-24.04 (= 6.17.0-14.14~24.04.1); however:
+  Package linux-headers-generic-hwe-24.04 is not configured yet.
+
+dpkg: error processing package linux-generic-hwe-24.04 (--configure):
+ dependency problems - leaving unconfigured
+Processing triggers for linux-image-6.17.0-14-generic (6.17.0-14.14~24.04.1) ...
+/etc/kernel/postinst.d/dkms:
+ * dkms: running auto installation service for kernel 6.17.0-14-generic
+Sign command: /usr/bin/kmodsign
+Signing key: /var/lib/shim-signed/mok/MOK.priv

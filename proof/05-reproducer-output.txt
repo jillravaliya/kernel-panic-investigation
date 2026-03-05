@@ -1,0 +1,9 @@
+=== Reproducing 55-initrd.install Bug ===
+
+Checking for initrd: /boot/initrd.img-6.17.0-14-generic
+
+✓ FOUND: initrd exists
+  → Script creates symlink
+  → Script exits 0 (correct behavior)
+
+=== End of reproduction ===

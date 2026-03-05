@@ -1,0 +1,25 @@
+=== System Configuration ===
+
+This proves that on NVMe systems, the driver is module-only (=m).
+Without initrd, the kernel cannot access the root filesystem.
+
+--- Current Kernel ---
+6.17.0-14-generic
+
+--- NVMe Driver Configuration ---
+CONFIG_BLK_DEV_NVME=m
+
+CONFIG_BLK_DEV_NVME=m means "module" - driver is in initrd, not built into kernel
+CONFIG_BLK_DEV_NVME=y would mean "built-in" - would work without initrd
+
+--- Postinst Script Execution Order (alphabetical) ---
+dkms
+initramfs-tools
+unattended-upgrades
+update-notifier
+xx-update-initrd-links
+zz-shim
+zz-update-grub
+
+Notice: "dkms" runs before "initramfs-tools" alphabetically.
+When dkms fails, run-parts stops, initramfs-tools never runs.

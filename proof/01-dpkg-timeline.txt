@@ -1,0 +1,32 @@
+=== DPKG Installation Timeline ===
+This shows the kernel installation attempts across 3 days.
+Notice: All attempts stop at "half-configured" status.
+
+/var/log/dpkg.log:2026-02-11 09:07:49 install linux-image-6.17.0-14-generic:amd64 <none> 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-11 09:07:49 status half-installed linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-11 09:07:49 status unpacked linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-11 09:09:25 configure linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1 <none>
+/var/log/dpkg.log:2026-02-11 09:09:25 status unpacked linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-11 09:09:25 status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-11 09:09:27 status installed linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-11 09:09:27 status triggers-pending linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-11 09:09:32 trigproc linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1 <none>
+/var/log/dpkg.log:2026-02-11 09:09:32 status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-12 09:35:57 configure linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1 <none>
+/var/log/dpkg.log:2026-02-12 09:35:57 status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-12 09:36:01 status installed linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-12 09:36:01 status triggers-pending linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-12 09:36:03 trigproc linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1 <none>
+/var/log/dpkg.log:2026-02-12 09:36:03 status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-13 08:41:06 configure linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1 <none>
+/var/log/dpkg.log:2026-02-13 08:41:06 status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-13 08:41:10 status installed linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-13 08:41:10 status triggers-pending linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-13 08:41:13 trigproc linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1 <none>
+/var/log/dpkg.log:2026-02-13 08:41:13 status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-13 12:36:06 configure linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1 <none>
+/var/log/dpkg.log:2026-02-13 12:36:06 status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-13 12:36:10 status installed linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-13 12:36:10 status triggers-pending linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
+/var/log/dpkg.log:2026-02-13 12:36:14 trigproc linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1 <none>
+/var/log/dpkg.log:2026-02-13 12:36:14 status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14~24.04.1
