@@ -32,7 +32,7 @@ Please reboot your computer.
 VFS: Unable to mount root fs on unknown-block(0,0)
 ```
 
-![Kernel Panic Screen](screenshots/kernel-panic.jpg)
+![Kernel Panic Screen](../screenshots/kernel-panic.jpg)
 
 **Purple screen — VFS unable to mount root fs on unknown-block(0,0)**
 
@@ -49,7 +49,7 @@ The menu showed two options:
 - `Ubuntu, with Linux 6.17.0-14-generic` ← just panicked
 - `Ubuntu, with Linux 6.14.0-37-generic` ← previous kernel
 
-![GRUB Boot Menu](screenshots/grub-menu.jpg)
+![GRUB Boot Menu](../screenshots/grub-menu.jpg)
 
 **GRUB showing two available kernels — 6.17 broken, 6.14 working**
 
@@ -79,7 +79,7 @@ lrwxrwxrwx  1 root root    28 Feb 11 09:09  initrd.img.old -> initrd.img-6.14.0-
 
 The symlink `initrd.img` pointed to `initrd.img-6.17.0-14-generic`. But that file did not exist.
 
-![Missing initrd file](screenshots/missing-initrd.png)
+![Missing initrd file](../screenshots/missing-initrd.png)
 
 **The symlink points to a file that was never created**
 
@@ -102,7 +102,7 @@ CONFIG_INITRAMFS_SOURCE=""
 CONFIG_BLK_DEV_NVME=m
 ```
 
-![Kernel configuration](screenshots/kernel-config.png)
+![Kernel configuration](../screenshots/kernel-config.png)
 
 **CONFIG_BLK_DEV_NVME=m — NVMe compiled as a loadable module, not into the kernel itself**
 
@@ -129,7 +129,7 @@ usr/lib/modules/6.17.0-14-generic/kernel/drivers/nvme/host/nvme-core.ko.zst
 usr/lib/modules/6.17.0-14-generic/kernel/drivers/nvme/host/nvme.ko.zst
 ```
 
-![NVMe modules in initramfs](screenshots/lsinitramfs-nvme .png)
+![NVMe modules in initramfs](../screenshots/lsinitramfs-nvme .png)
 
 **The NVMe driver modules exist only inside the initrd — nowhere on the disk itself**
 
@@ -191,7 +191,7 @@ $ sudo cat /var/log/dpkg.log | grep "6.17.0-14" | grep "trigproc\|half-configure
 2026-02-13 08:41:13  status half-configured linux-image-6.17.0-14-generic:amd64 6.17.0-14.14-24.04.1
 ```
 
-![Three-day failure pattern](screenshots/three-day-pattern.png)
+![Three-day failure pattern](../screenshots/three-day-pattern.png)
 
 **Three consecutive days — same failure state each time**
 
@@ -243,7 +243,7 @@ zz-shim
 zz-update-grub
 ```
 
-![Post-install scripts directory](screenshots/postinst-scripts.png)
+![Post-install scripts directory](../screenshots/postinst-scripts.png)
 
 **The post-install scripts directory — executed alphabetically by run-parts**
 
@@ -280,7 +280,7 @@ fatal error: VBox/cdefs.h: No such file or directory
 compilation terminated.
 ```
 
-![VirtualBox compilation error](screenshots/vbox-error.png)
+![VirtualBox compilation error](../screenshots/vbox-error.png)
 
 **VirtualBox DKMS compilation failure — missing header file VBox/cdefs.h**
 
@@ -319,7 +319,7 @@ fi
 exit 0
 ```
 
-![systemd exit 0 bug](screenshots/exit-0-bug.png)
+![systemd exit 0 bug](../screenshots/exit-0-bug.png)
 
 **Line 26 — exit 0 returned even when no initrd exists**
 
@@ -340,7 +340,7 @@ systemd: /usr/lib/kernel/install.d/55-initrd.install
 
 The behavior suggests returning **exit 1** here would cause dpkg to report a visible error, stop GRUB from writing an unbootable entry, and give the user a chance to fix the problem before rebooting. That is what the bug report covers.
 
-![Multiple exit 0 instances](screenshots/exit-0-multiple.png)
+![Multiple exit 0 instances](../screenshots/exit-0-multiple.png)
 
 **Multiple places in the script where exit 0 is returned regardless of initrd presence**
 
@@ -391,11 +391,11 @@ The report included:
 - Kernel configuration showing `CONFIG_BLK_DEV_NVME=m`
 - The distinction between the VirtualBox trigger and the systemd underlying issue
 
-![Bug initially filed](screenshots/bug-filed.png)
+![Bug initially filed](../screenshots/bug-filed.png)
 
 > ****Bug #2141741 filed - Also posted on Bug #2136499 connecting the 110+ affected VirtualBox users to the deeper systemd issue.
 
-![Bug confirmed by Ubuntu](screenshots/bug-confirmed.png)
+![Bug confirmed by Ubuntu](../screenshots/bug-confirmed.png)
 
 > **Within **2 hours**, Ubuntu developers confirmed the report. Status changed from **New** to **Confirmed**.**
 
