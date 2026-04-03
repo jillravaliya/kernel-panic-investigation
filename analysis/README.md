@@ -52,7 +52,7 @@ VirtualBox's module needs to match the running kernel exactly — this is called
 
 Powered on. Instead of the login screen:
 
-![Kernel Panic Screen](screenshots/kernel-panic.jpg)
+![Kernel Panic Screen](../screenshots/kernel-panic.jpg)
 
 ```
 KERNEL PANIC!
@@ -100,7 +100,7 @@ kernel starts → loads NVMe driver from initrd
 NVMe driver → makes /dev/nvme0n1 appear
 kernel reads /etc/fstab → finds UUID=d563d94d...
 kernel mounts that UUID as /
-systemd starts → full Linux running ✅
+systemd starts → full Linux running 
 
 WHAT HAPPENED:
 GRUB → loads kernel (no initrd — file missing!)
@@ -108,7 +108,7 @@ kernel starts → no NVMe driver available
 no /dev/nvme0n1 appears (SSD completely invisible)
 kernel tries to mount root filesystem
 finds zero block devices
-unknown-block(0,0) → KERNEL PANIC 💥
+unknown-block(0,0) → KERNEL PANIC 
 ```
 
 ---
@@ -117,7 +117,7 @@ unknown-block(0,0) → KERNEL PANIC 💥
 
 Powered off, powered back on. Interrupted automatic boot, opened the GRUB menu:
 
-![GRUB Boot Menu](screenshots/grub-menu.jpg)
+![GRUB Boot Menu](../screenshots/grub-menu.jpg)
 
 Two options:
 - `Ubuntu, with Linux 6.17.0-14-generic` ← just panicked
@@ -145,7 +145,7 @@ Next boot:
 
 After full recovery, grubenv is empty — no failed boots recorded:
 
-![grubenv healthy](screenshots/grubenv-healthy.png)
+![grubenv healthy](../screenshots/grubenv-healthy.png)
 
 ---
 
@@ -160,11 +160,11 @@ uname -r
 ls -la /boot/initrd*
 ```
 
-![Missing initrd](screenshots/missing-initrd.png)
+![Missing initrd](../screenshots/missing-initrd.png)
 
 ```
 lrwxrwxrwx  initrd.img → initrd.img-6.17.0-14-generic   (Feb 13 08:41)
--rw-r--r--  initrd.img-6.14.0-37-generic   73101720 bytes  ← real file ✅
+-rw-r--r--  initrd.img-6.14.0-37-generic   73101720 bytes  ← real file 
 lrwxrwxrwx  initrd.img.old → initrd.img-6.14.0-37-generic
 ```
 
@@ -180,7 +180,7 @@ Symlink: initrd.img ──────→ initrd.img-6.17.0-14-generic
 
 Current state of boot files (proof-08-boot-files.txt):
 
-![Boot Files](screenshots/boot-files.png)
+![Boot Files](../screenshots/boot-files.png)
 
 ```
 /boot/initrd.img-6.17.0-14-generic   77654318 bytes  ← now exists (manually created)
@@ -218,9 +218,9 @@ The kernel mounts this mini-filesystem in RAM, runs the init script which loads 
 WITHOUT initrd — the paradox:
 ┌─────────────────────────────────────────┐
 │ kernel: "I need to read /lib/modules/   │
-│          to find the NVMe driver"        │
+│          to find the NVMe driver"       │
 │ SSD:    "I'm here! But you need NVMe    │
-│          driver to talk to me!"          │
+│          driver to talk to me!"         │
 │ kernel: "I need the driver to find you" │
 │ SSD:    "You need to find me to get it" │
 │         ← infinite deadlock → PANIC     │
@@ -237,7 +237,7 @@ WITH initrd — the solution:
 │ SSD becomes visible                     │
 │ kernel mounts real / from SSD           │
 │ discards initrd from RAM                │
-│ full Linux runs ✅                       │
+│ full Linux runs                         │
 └─────────────────────────────────────────┘
 ```
 
@@ -249,7 +249,7 @@ initrd exists specifically because RAM needs no driver to access. The driver tra
 
 Checked the kernel configuration — the file recording every decision made when the kernel was compiled:
 
-![Kernel Config](screenshots/kernel-config.png)
+![Kernel Config](../screenshots/kernel-config.png)
 
 From `proof-03-nvme-config.txt`:
 
@@ -261,7 +261,7 @@ CONFIG_ATA=y
 --- above empty = nvme NOT built in ---
 ```
 
-![NVMe Not Built In](screenshots/nvme-not-builtin.png)
+![NVMe Not Built In](../screenshots/nvme-not-builtin.png)
 
 These four lines explain everything:
 
@@ -282,7 +282,7 @@ CONFIG_ATA=y
    SATA systems don't need initrd for storage
 
 CONFIG_BLK_DEV_INITRD=y
-   Kernel can accept an external initrd ✅
+   Kernel can accept an external initrd 
    But has nothing embedded by default
 
 CONFIG_INITRAMFS_SOURCE=""
@@ -311,7 +311,7 @@ Confirmed: NVMe drivers exist ONLY inside initrd, nowhere on disk:
 lsinitramfs /boot/initrd.img-$(uname -r) | grep -i nvme
 ```
 
-![initrd inside](screenshots/initrd-inside.png)
+![initrd inside](../screenshots/initrd-inside.png)
 
 From `proof-04-initrd-contents.txt`:
 
@@ -334,7 +334,7 @@ When the kernel panicked, this is what it was trying to satisfy:
 cat /etc/fstab
 ```
 
-![fstab UUID](screenshots/fstab-uuid.png)
+![fstab UUID](../screenshots/fstab-uuid.png)
 
 ```
 UUID=d563d94d-89c0-4ce4-99b7-39382f0bb311  /  ext4  defaults  0  1
@@ -362,7 +362,7 @@ Ubuntu generates the initrd automatically during kernel installation. Something 
 sudo cat /var/log/dpkg.log | grep "6.17.0-14" | grep "half-configured\|trigproc"
 ```
 
-![Three-Day Pattern](screenshots/three-day-pattern.png)
+![Three-Day Pattern](../screenshots/three-day-pattern.png)
 
 From `proof-01-dpkg-timeline.txt`:
 
@@ -389,7 +389,7 @@ install         → package installation starting
 half-installed  → files being copied to disk
 unpacked        → files copied, not yet configured
 half-configured → configuration STARTED but FAILED ← STUCK HERE
-installed       → fully installed ✅
+installed       → fully installed 
 triggers-pending → post-install triggers queued for later
 trigproc        → trigger being processed (retry attempt)
 ```
@@ -404,7 +404,7 @@ The apt terminal log captures what dpkg log doesn't — the actual error output:
 sudo zcat /var/log/apt/term.log.2.gz | grep -A3 "exit status 11"
 ```
 
-![dpkg states](screenshots/dpkg-states.png)
+![dpkg states](../screenshots/dpkg-states.png)
 
 From `proof-02-dkms-failure.txt`:
 
@@ -439,7 +439,7 @@ One package failure cascaded into four packages broken. Three separate apt sessi
 
 When a new kernel installs on Ubuntu, two completely independent systems run:
 
-![Two Systems](screenshots/two-systems.png)
+![Two Systems](../screenshots/two-systems.png)
 
 ```
 SYSTEM 1: dpkg/apt postinst
@@ -471,7 +471,7 @@ These two systems are completely independent. They don't know about each other's
 ls -la /etc/kernel/postinst.d/
 ```
 
-![Postinst Order](screenshots/postinst-order.png)
+![Postinst Order](../screenshots/postinst-order.png)
 
 From `proof-06-postinst-order.txt`:
 
@@ -516,7 +516,7 @@ make: bad exit status: 2
 dkms_autoinstaller: exit code 11
 ```
 
-![VirtualBox compilation error](screenshots/vbox-error.png)
+![VirtualBox compilation error](../screenshots/vbox-error.png)
 
 **Why VBox/cdefs.h was missing:**
 
@@ -579,7 +579,7 @@ While System 1 was stopped by dkms, System 2 (kernel-install) ran independently 
 cat /usr/lib/kernel/install.d/55-initrd.install
 ```
 
-![55-script-full](screenshots/55-script-full.png)
+![55-script-full](../screenshots/55-script-full.png)
 
 From `proof-05-buggy-script.txt`:
 
@@ -616,9 +616,9 @@ exit 0   ← THE BUG
          #  Whether initrd exists or not.
 ```
 
-![exit-0-bug](screenshots/exit-0-bug.png)
+![exit-0-bug](../screenshots/exit-0-bug.png)
 
-![exit-0-multiple](screenshots/exit-0-multiple.png)
+![exit-0-multiple](../screenshots/exit-0-multiple.png)
 
 **Step by step what happened when this script ran:**
 
@@ -711,8 +711,8 @@ Feb 13 08:41:
 
 Feb 13 — next reboot:
   GRUB default = 6.17.0-14
-  loads vmlinuz-6.17.0-14-generic ✅
-  tries to load initrd.img-6.17.0-14-generic ❌ does not exist
+  loads vmlinuz-6.17.0-14-generic 
+  tries to load initrd.img-6.17.0-14-generic does not exist
   kernel starts without NVMe driver
   SSD invisible
   KERNEL PANIC
@@ -724,10 +724,10 @@ The panic didn't happen on day 1 or day 2 because grub.cfg hadn't yet been updat
 
 ```
 Feb 14 16:22:00  configure linux-image-6.17.0-14   ← manual fix
-Feb 14 16:22:04  status installed                   ✅
-Feb 14 16:22:04  linux-headers-6.17.0-14 installed  ✅
-Feb 14 16:22:04  linux-headers-generic installed     ✅
-Feb 14 16:22:10  status installed                   ✅ everything clean
+Feb 14 16:22:04  status installed                   
+Feb 14 16:22:04  linux-headers-6.17.0-14 installed  
+Feb 14 16:22:04  linux-headers-generic installed     
+Feb 14 16:22:10  status installed                  ← everything clean
 ```
 
 After removing VirtualBox and manually running `update-initramfs`, the package finally configured successfully.
@@ -738,9 +738,9 @@ After removing VirtualBox and manually running `update-initramfs`, the package f
 
 Filed against the systemd package as Bug #2141741. The discussion that followed reveals a deeper disagreement about where the real fix belongs.
 
-![Bug Filed](screenshots/bug-filed.png)
+![Bug Filed](../screenshots/bug-filed.png)
 
-![Bug Confirmed](screenshots/bug-confirmed.png)
+![Bug Confirmed](../screenshots/bug-confirmed.png)
 
 Within 2 hours of filing, Ubuntu developers confirmed the report. Status: New → Confirmed.
 
@@ -858,7 +858,7 @@ Bug #2141741 (the real bug — silent exit 0):
   systemd (Ubuntu) → Incomplete
                      Nick not convinced about 55-initrd fix alone
                      
-  linux (Ubuntu)   → Confirmed ✅
+  linux (Ubuntu)   → Confirmed 
                      kernel team now owns it
 
 March 24, 2026:
@@ -913,10 +913,10 @@ After the fix, VirtualBox DKMS now compiles successfully for kernel 6.17.0-19:
 dkms status
 ```
 
-![dkms-success](screenshots/dkms-success.png)
+![dkms-success](../screenshots/dkms-success.png)
 
 ```
-virtualbox/7.0.16, 6.17.0-19-generic, x86_64: installed ✅
+virtualbox/7.0.16, 6.17.0-19-generic, x86_64: installed 
 ```
 
 The trigger is fixed. The underlying issue (55-initrd.install exit 0) remains open.
@@ -1090,8 +1090,8 @@ sudo update-initramfs -c -k 6.17.0-14-generic
 
 # 4. Update GRUB so it finds the new file
 sudo update-grub
-# Found linux image: /boot/vmlinuz-6.17.0-14-generic ✅
-# Found initrd image: /boot/initrd.img-6.17.0-14-generic ✅
+# Found linux image: /boot/vmlinuz-6.17.0-14-generic 
+# Found initrd image: /boot/initrd.img-6.17.0-14-generic 
 
 # 5. Remove the trigger
 sudo apt remove --purge virtualbox
@@ -1102,7 +1102,7 @@ sudo reboot
 
 # 7. Verify
 uname -r
-# 6.17.0-14-generic ✅
+# 6.17.0-14-generic 
 ```
 
 ---
