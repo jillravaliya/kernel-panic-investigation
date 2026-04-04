@@ -1,0 +1,5 @@
+CONFIG_BLK_DEV_INITRD=y
+CONFIG_INITRAMFS_SOURCE=""
+CONFIG_BLK_DEV_NVME=m
+CONFIG_ATA=y
+--- above empty = nvme NOT built in ---

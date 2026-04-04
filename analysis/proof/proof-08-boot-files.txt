@@ -1,0 +1,10 @@
+-rw-r--r-- 1 root root   302820 Jan 15 19:14 /boot/config-6.17.0-14-generic
+-rw-r--r-- 1 root root   302861 Mar  7 02:46 /boot/config-6.17.0-19-generic
+lrwxrwxrwx 1 root root       28 Mar 15 11:29 /boot/initrd.img -> initrd.img-6.17.0-19-generic
+-rw-r--r-- 1 root root 77654318 Mar  5 08:59 /boot/initrd.img-6.17.0-14-generic
+-rw-r--r-- 1 root root 78094671 Apr  1 10:49 /boot/initrd.img-6.17.0-19-generic
+lrwxrwxrwx 1 root root       28 Mar 15 11:29 /boot/initrd.img.old -> initrd.img-6.17.0-14-generic
+lrwxrwxrwx 1 root root       25 Mar 15 11:29 /boot/vmlinuz -> vmlinuz-6.17.0-19-generic
+-rw------- 1 root root 16738376 Jan 15 19:50 /boot/vmlinuz-6.17.0-14-generic
+-rw------- 1 root root 16734280 Mar  7 02:48 /boot/vmlinuz-6.17.0-19-generic
+lrwxrwxrwx 1 root root       25 Mar 15 11:29 /boot/vmlinuz.old -> vmlinuz-6.17.0-14-generic

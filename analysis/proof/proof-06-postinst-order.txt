@@ -1,0 +1,17 @@
+total 32
+drwxr-xr-x 2 root root 4096 Apr  1 10:48 .
+drwxr-xr-x 8 root root 4096 Jan  8 10:30 ..
+-rwxr-xr-x 1 root root 1102 Apr  8  2024 dkms
+-rwxr-xr-x 1 root root  863 May 27  2024 initramfs-tools
+-rwxr-xr-x 1 root root 1163 Feb 12  2024 unattended-upgrades
+lrwxrwxrwx 1 root root   49 Apr  2  2025 update-notifier -> /usr/share/update-notifier/notify-reboot-required
+-rwxr-xr-x 1 root root  882 May 27  2021 xx-update-initrd-links
+-rwxr-xr-x 1 root root  372 Jan 24  2024 zz-shim
+-rwxr-xr-x 1 root root  646 Mar 17  2025 zz-update-grub
+total 28
+drwxr-xr-x 2 root root 4096 Mar 28 09:35 .
+drwxr-xr-x 3 root root 4096 Mar 28 09:35 ..
+-rwxr-xr-x 1 root root 2035 Feb 27  2024 50-depmod.install
+-rwxr-xr-x 1 root root  711 Nov 25 23:03 55-initrd.install
+-rwxr-xr-x 1 root root 7123 Mar 13 22:18 90-loaderentry.install
+-rwxr-xr-x 1 root root 3163 Feb 27  2024 90-uki-copy.install

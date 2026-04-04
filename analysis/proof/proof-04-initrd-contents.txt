@@ -1,0 +1,12 @@
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/common
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/common/nvme-auth.ko.zst
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/common/nvme-keyring.ko.zst
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/host
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/host/nvme-core.ko.zst
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/host/nvme-fabrics.ko.zst
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/host/nvme-fc.ko.zst
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/host/nvme.ko.zst
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/target
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/target/nvmet-fc.ko.zst
+usr/lib/modules/6.17.0-19-generic/kernel/drivers/nvme/target/nvmet.ko.zst
