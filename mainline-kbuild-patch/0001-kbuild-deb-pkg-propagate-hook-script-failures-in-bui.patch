@@ -1,0 +1,90 @@
+From 1d7c7d8bf70c3d2b2abbb5ead3c654978ead419a Mon Sep 17 00:00:00 2001
+From: jillravaliya <jillravaliya@gmail.com>
+Date: Wed, 22 Apr 2026 23:37:39 +0530
+Subject: [PATCH] kbuild: deb-pkg: propagate hook script failures in builddeb
+
+The 'builddeb' script in the Linux kernel source generates the
+maintainer scripts for Debian-based distributions. Currently, it
+executes post-installation hooks via run-parts but unconditionally
+exits with code 0. This creates a "False Success" vulnerability that
+compromises the entire system boot integrity.
+
+THE INVESTIGATION: FROM RING 0 TO THE ROOT OF TRUST
+This discovery began when a Ring 0 driver project (developed after
+LFD103 using VirtualBox) led to a catastrophic boot failure and
+kernel panic on an NVMe-based host system. A deep-dive forensic
+analysis (documented at https://github.com/jillravaliya/kernel-panic-investigation/tree/main)
+initially targeted the Ubuntu systemd hook
+'/usr/lib/kernel/install.d/55-initrd.install', which contains the
+following logic flaw (Bug #2141741):
+
+    if [ -e "$INITRD_SRC" ]; then
+        ln -fs "$INITRD_SRC" "$KERNEL_INSTALL_STAGING_AREA"
+    else
+        echo "$INITRD_SRC does not exist, not installing an initrd"
+    fi
+    exit 0  <-- THE DOWNSTREAM SILENT LIE
+
+In technical dialogue on Launchpad, systemd maintainers (Nick) argued
+that while this downstream hook detects the missing initrd, the
+"Root of Trust" must be the kernel packaging itself. If the
+packaging tool invokes 'run-parts' and it fails, the process must
+abort immediately rather than relying on downstream scripts to
+guess if a failure occurred.
+
+THE MAINLINE ARCHITECTURAL FLAW:
+Following this lead, an audit of the Mainline Kernel source revealed
+that the 'builddeb' script (scripts/package/builddeb) mirrors this
+exact dangerous behavior in the 'install_maint_scripts' function:
+
+    hookdirs="${hookdirs# }"
+    test -n "$hookdirs" && run-parts --arg="${KERNELRELEASE}" \
+         --arg="/${installed_image_path}" $hookdirs
+    exit 0  <-- THE UPSTREAM SILENT LIE
+
+THE ALPHABETICAL TRAP & NVMe PARADOX:
+This upstream exit 0 creates an "Alphabetical Trap." On modular
+kernels (CONFIG_BLK_DEV_NVME=m), the storage driver resides
+exclusively in the initrd. If an early-sequenced hook, such as a DKMS
+build (starting with 'd'), fails, run-parts terminates. Because
+builddeb ignores this, the 'initramfs-tools' hook (starting with 'i')
+is never reached.
+
+The kernel packaging then "lies" to the package manager with a
+successful exit code. GRUB promotes the broken kernel, leading to a
+'VFS: unknown-block(0,0)' KERNEL PANIC on reboot because the kernel
+cannot see the NVMe drive.
+
+CONCLUSION:
+By fixing this Upstream, we ensure the Kernel Build System respects
+the integrity of the hook chain. This patch enforces "Defense in
+Depth" at the source, preventing unbootable deployments across the
+entire Linux ecosystem.
+
+Signed-off-by: jillravaliya <jillravaliya@gmail.com>
+Link: https://bugs.launchpad.net/ubuntu/+source/systemd/+bug/2141741
+---
+ scripts/package/builddeb | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/package/builddeb b/scripts/package/builddeb
+index 3627ca227..6ea768f08 100755
+--- a/scripts/package/builddeb
++++ b/scripts/package/builddeb
+@@ -98,7 +98,12 @@ install_maint_scripts () {
+ 			hookdirs="\$hookdirs \$dir/${script}.d"
+ 		done
+ 		hookdirs="\${hookdirs# }"
+-		test -n "\$hookdirs" && run-parts --arg="${KERNELRELEASE}" --arg="/${installed_image_path}" \$hookdirs
++		if [ -n "\$hookdirs" ]; then
++                    if ! run-parts --arg="\${KERNELRELEASE}" --arg="/\${installed_image_path}" \$hookdirs; then
++                         echo "E: Post-install hooks failed." >&2
++                         exit 1
++                    fi
++                fi
+ 		exit 0
+ 		EOF
+ 		chmod 755 "${pdir}/DEBIAN/${script}"
+-- 
+2.51.1
+
